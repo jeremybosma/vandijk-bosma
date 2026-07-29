@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  --background: oklch(0.15 0.012 70);
+  --foreground: oklch(0.96 0.01 95);
+  --muted: oklch(0.74 0.02 80);
+  --surface: oklch(0.19 0.014 70);
+  --surface-2: oklch(0.23 0.016 70);
+  --border: oklch(0.34 0.02 75);
+  --accent: oklch(0.78 0.1 85);
+  --accent-strong: oklch(0.72 0.12 80);
+  --accent-ink: oklch(0.2 0.03 70);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, sans-serif;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 10% -10%, oklch(0.42 0.08 85 / 0.22), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 0%, oklch(0.3 0.04 70 / 0.3), transparent);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: oklch(0.78 0.1 85 / 0.35);
+  color: var(--foreground);
+}
+
+.font-display {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+}
+
+.pressable {
+  transition-property: transform, opacity, background-color, border-color, color;
+  transition-duration: 180ms;
+  transition-timing-function: var(--ease-out);
+}
+
+.pressable:active {
+  transform: scale(0.96);
+}

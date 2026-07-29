@@ -1,0 +1,79 @@
+"use client";
+
+import { motion } from "motion/react";
+
+import { formatPrice } from "@/lib/services";
+
+const points = [
+  "1× per maand een full detail bij u thuis",
+  "Maandelijks betalen, geen losse facturen per beurt",
+  "Minimale looptijd van 6 maanden",
+  "Vast moment inplannen dat bij u past",
+] as const;
+
+export function Abonnement() {
+  return (
+    <section
+      id="abonnement"
+      className="scroll-mt-24 px-5 pb-20 sm:px-8 sm:pb-28"
+    >
+      <motion.div
+        className="mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-accent/35 bg-surface"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+      >
+        <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="p-7 sm:p-10">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">
+              Abonnement
+            </p>
+            <h2 className="font-display mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+              Full detail elke maand, voor particulieren
+            </h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+              Liever geen losse afspraken? Met het privé-abonnement komen wij
+              maandelijks langs voor een full detail. U betaalt per maand en
+              houdt uw auto structureel in topconditie.
+            </p>
+
+            <ul className="mt-8 space-y-3">
+              {points.map((point) => (
+                <li key={point} className="flex items-start gap-3 text-sm">
+                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex flex-col justify-between border-t border-border bg-surface-2/70 p-7 sm:p-10 lg:border-l lg:border-t-0">
+            <div>
+              <p className="text-sm text-muted">Per maand</p>
+              <p className="mt-2 flex items-baseline gap-2">
+                <span className="font-display text-5xl font-semibold tracking-tight">
+                  {formatPrice(80)}
+                </span>
+                <span className="text-sm text-muted">/ maand</span>
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                Full detail · 1× per maand · min. 6 maanden · incl. BTW
+              </p>
+              <p className="mt-4 text-sm text-accent">
+                Bespaar t.o.v. een losse full detail van {formatPrice(150)}
+              </p>
+            </div>
+
+            <a
+              href="/?dienst=abonnement#afspraak"
+              className="pressable mt-8 inline-flex h-12 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-ink"
+            >
+              Abonnement aanvragen
+            </a>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
