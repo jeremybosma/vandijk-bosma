@@ -2,7 +2,8 @@
 
 import { motion } from "motion/react";
 
-import { formatPrice } from "@/lib/services";
+import { useBooking } from "@/components/booking-provider";
+import { formatPrice } from "@/lib/catalog";
 
 const points = [
   "1× per maand een full detail bij u thuis",
@@ -12,6 +13,8 @@ const points = [
 ] as const;
 
 export function Abonnement() {
+  const { openBooking } = useBooking();
+
   return (
     <section
       id="abonnement"
@@ -65,12 +68,13 @@ export function Abonnement() {
               </p>
             </div>
 
-            <a
-              href="/?dienst=abonnement#afspraak"
+            <button
+              type="button"
+              onClick={() => openBooking({ dienst: "abonnement" })}
               className="pressable mt-8 inline-flex h-12 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-ink"
             >
               Abonnement aanvragen
-            </a>
+            </button>
           </div>
         </div>
       </motion.div>

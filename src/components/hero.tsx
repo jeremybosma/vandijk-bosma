@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 
+import { useBooking } from "@/components/booking-provider";
 import { SITE } from "@/lib/site";
 
 const collage = [
@@ -29,6 +30,8 @@ const collage = [
 ] as const;
 
 export function Hero() {
+  const { openBooking } = useBooking();
+
   return (
     <section className="relative isolate min-h-[100svh] overflow-hidden">
       <div className="absolute inset-0 grid grid-cols-2 grid-rows-3 gap-1 sm:grid-cols-3 sm:grid-rows-2 sm:gap-1.5">
@@ -103,12 +106,13 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
         >
-          <a
-            href="#afspraak"
+          <button
+            type="button"
+            onClick={() => openBooking()}
             className="pressable inline-flex h-12 items-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-ink"
           >
             Afspraak maken
-          </a>
+          </button>
           <a
             href="#diensten"
             className="pressable inline-flex h-12 items-center rounded-full border border-white/30 bg-white/10 px-6 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/16"

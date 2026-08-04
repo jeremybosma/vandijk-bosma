@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Source_Sans_3, Syne } from "next/font/google";
 
+import { BookingShell } from "@/components/booking-shell";
 import { FloatingCta } from "@/components/floating-cta";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
@@ -58,10 +59,12 @@ export default function RootLayout({
       className={`${syne.variable} ${sourceSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
-        <SiteNav />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-        <FloatingCta />
+        <BookingShell>
+          <SiteNav />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+          <FloatingCta />
+        </BookingShell>
       </body>
     </html>
   );

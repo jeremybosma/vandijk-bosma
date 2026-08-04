@@ -2,30 +2,26 @@
 
 import { useEffect, useState } from "react";
 
+import { useBooking } from "@/components/booking-provider";
+
 export function FloatingCta() {
+  const { open, openBooking } = useBooking();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
-      const booking = document.getElementById("afspraak");
-      if (!booking) {
-        setVisible(window.scrollY > 320);
-        return;
-      }
-      const rect = booking.getBoundingClientRect();
-      const inBooking =
-        rect.top < window.innerHeight * 0.7 && rect.bottom > 80;
-      setVisible(window.scrollY > 320 && !inBooking);
+      setVisible(window.scrollY > 320 && !open);
     };
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [open]);
 
   return (
-    <a
-      href="#afspraak"
+    <button
+      type="button"
+      onClick={() => openBooking()}
       className={`pressable fixed bottom-5 right-5 z-50 inline-flex h-12 items-center gap-2 rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink shadow-[0_12px_40px_oklch(0.45_0.08_85/0.45)] transition-[opacity,transform] duration-300 sm:bottom-7 sm:right-7 ${
         visible
           ? "pointer-events-auto translate-y-0 opacity-100"
@@ -39,6 +35,6 @@ export function FloatingCta() {
         <span className="relative inline-flex size-2 rounded-full bg-accent-ink/70" />
       </span>
       Afspraak plannen
-    </a>
+    </button>
   );
 }

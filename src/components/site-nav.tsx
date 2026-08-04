@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { useBooking } from "@/components/booking-provider";
 import { SITE } from "@/lib/site";
 
 const links = [
@@ -14,6 +15,7 @@ const links = [
 ] as const;
 
 export function SiteNav() {
+  const { openBooking } = useBooking();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -52,12 +54,13 @@ export function SiteNav() {
               {link.label}
             </a>
           ))}
-          <a
-            href="#afspraak"
+          <button
+            type="button"
+            onClick={() => openBooking()}
             className="pressable inline-flex h-10 items-center rounded-full bg-accent px-5 text-sm font-medium text-accent-ink"
           >
             Afspraak maken
-          </a>
+          </button>
         </nav>
 
         <button
@@ -101,13 +104,16 @@ export function SiteNav() {
                 {link.label}
               </a>
             ))}
-            <a
-              href="#afspraak"
+            <button
+              type="button"
               className="pressable mt-2 inline-flex h-11 items-center justify-center rounded-full bg-accent text-sm font-medium text-accent-ink"
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                setOpen(false);
+                openBooking();
+              }}
             >
               Afspraak maken
-            </a>
+            </button>
           </div>
         </div>
       ) : null}

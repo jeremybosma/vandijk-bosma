@@ -2,9 +2,12 @@
 
 import { motion } from "motion/react";
 
-import { formatPriceFrom, SERVICES } from "@/lib/services";
+import { useBooking } from "@/components/booking-provider";
+import { SERVICES, formatPriceFrom, type PackageId } from "@/lib/catalog";
 
 export function Diensten() {
+  const { openBooking } = useBooking();
+
   return (
     <section id="diensten" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-28">
       <div className="mx-auto max-w-6xl">
@@ -57,19 +60,22 @@ export function Diensten() {
                 {service.description}
               </p>
               <ul className="mt-6 space-y-2 border-t border-border pt-5">
-                {service.highlights.map((item) => (
+                {(service.highlights ?? []).map((item) => (
                   <li key={item} className="flex items-center gap-2 text-sm">
                     <span className="size-1.5 rounded-full bg-accent" />
                     {item}
                   </li>
                 ))}
               </ul>
-              <a
-                href={`/?dienst=${service.id}#afspraak`}
+              <button
+                type="button"
+                onClick={() =>
+                  openBooking({ dienst: service.id as PackageId })
+                }
                 className="pressable mt-7 inline-flex h-11 items-center justify-center rounded-full border border-border bg-surface-2 text-sm font-medium transition-colors hover:border-accent/50 hover:text-accent"
               >
                 Kies dit pakket
-              </a>
+              </button>
             </motion.article>
           ))}
         </div>
