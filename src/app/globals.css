@@ -73,3 +73,18 @@ body {
 .pressable:active {
   transform: scale(0.96);
 }
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+a[href],
+label[for],
+summary,
+.pressable:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"],
+.pressable:disabled {
+  cursor: not-allowed;
+}
