@@ -73,9 +73,23 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <p className="mx-auto max-w-6xl px-5 pb-8 pt-2 text-xs text-muted sm:px-8">
-        © {new Date().getFullYear()} {SITE.fullName}. Alle rechten voorbehouden.
-      </p>
+      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 pb-8 pt-2 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <p>
+          © {new Date().getFullYear()} {SITE.fullName}. Alle rechten
+          voorbehouden.
+        </p>
+        <p>
+          Gebouwd door{" "}
+          <a
+            href="https://internet-engineering.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted transition-colors hover:text-accent"
+          >
+            internet-engineering.com
+          </a>
+        </p>
+      </div>
     </footer>
   );
 }
