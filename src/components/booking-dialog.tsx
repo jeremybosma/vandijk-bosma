@@ -20,6 +20,7 @@ import {
   addonSavings,
   calculateSavings,
   calculateTotal,
+  formatPrice,
   fullUpsellSavings,
   getCatalogItem,
   isBookableId,
@@ -376,22 +377,22 @@ export function BookingDialog() {
                         key={addon.id}
                         type="button"
                         onClick={() => toggleAddon(addon.id)}
-                        className={`pressable flex w-full items-center gap-3 rounded-2xl border p-2.5 text-left transition-colors ${
+                        className={`pressable flex w-full items-stretch gap-3 rounded-2xl border p-2.5 text-left transition-colors ${
                           selected
                             ? "border-accent/50 bg-accent/10"
                             : "border-border bg-surface-2 hover:border-accent/35"
                         }`}
                       >
-                        <span className="relative size-16 shrink-0 overflow-hidden rounded-xl outline outline-1 outline-black/10">
+                        <span className="relative w-[4.5rem] min-h-[4.5rem] shrink-0 self-stretch overflow-hidden rounded-xl outline outline-1 outline-black/10">
                           <Image
                             src={addon.image}
                             alt=""
                             fill
                             className="object-cover"
-                            sizes="64px"
+                            sizes="72px"
                           />
                         </span>
-                        <span className="min-w-0 flex-1">
+                        <span className="min-w-0 flex-1 py-0.5">
                           <span className="flex items-start justify-between gap-2">
                             <span className="font-medium leading-snug">
                               {addon.name}
@@ -399,10 +400,9 @@ export function BookingDialog() {
                             <span className="shrink-0 text-right">
                               {packagePricing && save > 0 ? (
                                 <>
-                                  <MorphPrice
-                                    value={addon.soloPrice ?? addon.price}
-                                    className="mr-1.5 text-xs text-muted line-through"
-                                  />
+                                  <span className="mr-1.5 text-xs text-muted line-through decoration-muted">
+                                    {formatPrice(addon.soloPrice ?? addon.price)}
+                                  </span>
                                   <MorphPrice
                                     value={price}
                                     className="text-sm font-semibold"
@@ -713,27 +713,31 @@ function ServiceGroup({
             key={item.id}
             type="button"
             onClick={() => onSelect(item.id)}
-            className={`pressable flex w-full items-center gap-3 rounded-2xl border p-2.5 text-left transition-colors ${
+            className={`pressable flex w-full items-stretch gap-3 rounded-2xl border p-2.5 text-left transition-colors ${
               accent
                 ? "border-accent/30 bg-accent/5 hover:border-accent/50"
                 : "border-border bg-surface-2 hover:border-accent/40"
             }`}
           >
-            <span className="relative size-16 shrink-0 overflow-hidden rounded-xl outline outline-1 outline-black/10">
+            <span className="relative w-[4.5rem] min-h-[4.5rem] shrink-0 self-stretch overflow-hidden rounded-xl outline outline-1 outline-black/10">
               <Image
                 src={item.image}
                 alt=""
                 fill
                 className="object-cover"
-                sizes="64px"
+                sizes="72px"
               />
             </span>
-            <span className="min-w-0 flex-1">
+            <span className="min-w-0 flex-1 py-0.5">
               <span className="flex items-start justify-between gap-2">
                 <span className="font-medium leading-snug">{item.name}</span>
                 <MorphPrice
                   value={item.price}
-                  suffix={item.priceSuffix ?? ""}
+                  suffix={
+                    item.priceSuffix
+                      ? ` ${item.priceSuffix.replace(/^\s+/, "")}`
+                      : ""
+                  }
                   className="shrink-0 text-sm font-semibold"
                 />
               </span>
@@ -839,7 +843,11 @@ function UpsellStep({
         onClick={onAccept}
         className="pressable inline-flex h-12 w-full items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-ink"
       >
-        Ja, full detail voor <MorphPrice value={150} className="inline" />
+        <MorphPrice
+          value={150}
+          prefix="Ja, full detail voor "
+          className="inline"
+        />
       </button>
       <button
         type="button"

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 
 import { useBooking } from "@/components/booking-provider";
@@ -29,7 +30,7 @@ export function Diensten() {
           {SERVICES.map((service, index) => (
             <motion.article
               key={service.id}
-              className={`flex flex-col rounded-[1.5rem] border border-border bg-surface p-6 sm:p-7 ${
+              className={`flex flex-col overflow-hidden rounded-[1.5rem] border border-border bg-surface ${
                 service.id === "full" ? "md:-translate-y-2 md:border-accent/40" : ""
               }`}
               initial={{ opacity: 0, y: 16 }}
@@ -41,43 +42,56 @@ export function Diensten() {
                 ease: [0.23, 1, 0.32, 1],
               }}
             >
-              {service.id === "full" ? (
-                <span className="mb-4 w-fit rounded-full bg-accent/15 px-3 py-1 text-xs font-medium text-accent">
-                  Meest gekozen
-                </span>
-              ) : (
-                <span className="mb-4 h-6" aria-hidden />
-              )}
-              <h3 className="font-display text-xl font-semibold tracking-tight">
-                {service.name}
-              </h3>
-              <p className="mt-3 flex items-baseline gap-2">
-                <MorphPriceFrom
-                  value={service.price}
-                  className="text-3xl font-semibold tracking-tight"
+              <div className="relative h-40 w-full sm:h-44">
+                <Image
+                  src={service.image}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <span className="text-sm text-muted">{service.durationLabel}</span>
-              </p>
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                {service.description}
-              </p>
-              <ul className="mt-6 space-y-2 border-t border-border pt-5">
-                {(service.highlights ?? []).map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm">
-                    <span className="size-1.5 rounded-full bg-accent" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <button
-                type="button"
-                onClick={() =>
-                  openBooking({ dienst: service.id as PackageId })
-                }
-                className="pressable mt-7 inline-flex h-11 items-center justify-center rounded-full border border-border bg-surface-2 text-sm font-medium transition-colors hover:border-accent/50 hover:text-accent"
-              >
-                Kies dit pakket
-              </button>
+                <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
+                {service.id === "full" ? (
+                  <span className="absolute left-4 top-4 rounded-full bg-accent/90 px-3 py-1 text-xs font-medium text-accent-ink">
+                    Meest gekozen
+                  </span>
+                ) : null}
+                <p className="absolute bottom-3 left-4 right-4 text-sm font-medium text-white">
+                  {service.name}
+                </p>
+              </div>
+
+              <div className="flex flex-1 flex-col p-6 sm:p-7">
+                <p className="flex items-baseline gap-2">
+                  <MorphPriceFrom
+                    value={service.price}
+                    className="text-3xl font-semibold tracking-tight"
+                  />
+                  <span className="text-sm text-muted">
+                    {service.durationLabel}
+                  </span>
+                </p>
+                <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
+                  {service.description}
+                </p>
+                <ul className="mt-6 space-y-2 border-t border-border pt-5">
+                  {(service.highlights ?? []).map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-sm">
+                      <span className="size-1.5 rounded-full bg-accent" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  onClick={() =>
+                    openBooking({ dienst: service.id as PackageId })
+                  }
+                  className="pressable mt-7 inline-flex h-11 items-center justify-center rounded-full border border-border bg-surface-2 text-sm font-medium transition-colors hover:border-accent/50 hover:text-accent"
+                >
+                  Kies dit pakket
+                </button>
+              </div>
             </motion.article>
           ))}
         </div>
@@ -93,13 +107,13 @@ export function Diensten() {
             </p>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
             {ADDONS.map((addon, index) => (
               <motion.button
                 key={addon.id}
                 type="button"
                 onClick={() => openBooking({ dienst: addon.id })}
-                className="pressable flex flex-col items-start rounded-2xl border border-border bg-surface px-4 py-4 text-left transition-colors hover:border-accent/45"
+                className="pressable flex items-stretch gap-3 rounded-2xl border border-border bg-surface p-2.5 text-left transition-colors hover:border-accent/45"
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
@@ -109,13 +123,24 @@ export function Diensten() {
                   ease: [0.23, 1, 0.32, 1],
                 }}
               >
-                <span className="text-sm font-medium leading-snug">
-                  {addon.name}
+                <span className="relative w-[4.5rem] min-h-[4.5rem] shrink-0 self-stretch overflow-hidden rounded-xl outline outline-1 outline-black/10">
+                  <Image
+                    src={addon.image}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="72px"
+                  />
                 </span>
-                <MorphPrice
-                  value={addon.soloPrice}
-                  className="mt-2 text-sm text-muted"
-                />
+                <span className="flex min-w-0 flex-1 flex-col justify-center py-0.5 pr-1">
+                  <span className="text-sm font-medium leading-snug">
+                    {addon.name}
+                  </span>
+                  <MorphPrice
+                    value={addon.soloPrice}
+                    className="mt-1 text-sm text-muted"
+                  />
+                </span>
               </motion.button>
             ))}
           </div>
