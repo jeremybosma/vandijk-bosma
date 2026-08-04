@@ -14,7 +14,7 @@ import {
 import { useBooking } from "@/components/booking-provider";
 import {
   ADDONS,
-  PRIMARY_OPTIONS,
+  PACKAGES,
   addonPriceFor,
   addonSavings,
   calculateTotal,
@@ -26,6 +26,7 @@ import {
   usesPackageAddonPricing,
   type AddonId,
   type BookableId,
+  type CatalogItem,
 } from "@/lib/catalog";
 
 type Step =
@@ -319,86 +320,31 @@ export function BookingDialog() {
 
             <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5 sm:py-5">
               {step === "service" ? (
-                <div className="space-y-2">
-                  <p className="mb-3 text-sm text-muted">
-                    Kies een pakket of een losse behandeling.
-                  </p>
-                  {PRIMARY_OPTIONS.map((item) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => selectPrimary(item.id)}
-                      className={`pressable flex w-full items-center gap-3 rounded-2xl border p-2.5 text-left transition-colors ${
-                        item.id === "abonnement" || item.kind === "addon"
-                          ? "border-accent/30 bg-accent/5 hover:border-accent/50"
-                          : "border-border bg-surface-2 hover:border-accent/40"
-                      }`}
-                    >
-                      <span className="relative size-16 shrink-0 overflow-hidden rounded-xl outline outline-1 outline-black/10">
-                        <Image
-                          src={item.image}
-                          alt=""
-                          fill
-                          className="object-cover"
-                          sizes="64px"
-                        />
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="flex items-start justify-between gap-2">
-                          <span className="font-medium leading-snug">
-                            {item.name}
-                          </span>
-                          <span className="shrink-0 text-sm font-semibold">
-                            {item.priceSuffix
-                              ? `${formatPrice(item.price)}${item.priceSuffix}`
-                              : formatPrice(item.price)}
-                          </span>
-                        </span>
-                        <span className="mt-0.5 block text-xs text-muted">
-                          {item.description}
-                        </span>
-                        {item.kind === "addon" ? (
-                          <span className="mt-1 inline-block text-[11px] font-medium text-accent">
-                            Ook los te boeken
-                          </span>
-                        ) : null}
-                      </span>
-                    </button>
-                  ))}
+                <div className="space-y-6">
+                  <ServiceGroup
+                    title="Pakketten"
+                    hint="Complete behandelingen voor binnen, buiten of beide."
+                    items={PACKAGES}
+                    onSelect={selectPrimary}
+                  />
+                  <ServiceGroup
+                    title="Losse behandelingen"
+                    hint="Alleen wat u nodig heeft, zonder volledig pakket."
+                    items={ADDONS}
+                    onSelect={selectPrimary}
+                    accent
+                  />
                 </div>
               ) : null}
 
               {step === "upsell" ? (
-                <div className="space-y-4">
-                  <div className="rounded-2xl border border-accent/40 bg-accent/10 p-5">
-                    <p className="text-xs font-medium uppercase tracking-[0.16em] text-accent">
-                      Tip
-                    </p>
-                    <h3 className="font-display mt-2 text-2xl font-semibold tracking-tight">
-                      Pak full detail en bespaar {formatPrice(upsellSave)}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted">
-                      Los exterieur en interieur samen kost{" "}
-                      {formatPrice(70 + 100)}. Full detail is{" "}
-                      {formatPrice(150)}. U bespaart {formatPrice(upsellSave)}{" "}
-                      en krijgt alles in één bezoek.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={acceptUpsell}
-                    className="pressable inline-flex h-12 w-full items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-ink"
-                  >
-                    Upgrade naar full detail
-                  </button>
-                  <button
-                    type="button"
-                    onClick={skipUpsell}
-                    className="pressable inline-flex h-11 w-full items-center justify-center rounded-full border border-border text-sm font-medium"
-                  >
-                    Verder met {primary?.name.toLowerCase()}
-                  </button>
-                </div>
+                <UpsellStep
+                  primaryId={form.primaryId}
+                  primaryName={primary?.name ?? ""}
+                  savings={upsellSave}
+                  onAccept={acceptUpsell}
+                  onSkip={skipUpsell}
+                />
               ) : null}
 
               {step === "addons" ? (
@@ -699,6 +645,161 @@ export function BookingDialog() {
         </motion.div>
       ) : null}
     </AnimatePresence>
+  );
+}
+
+function ServiceGroup({
+  title,
+  hint,
+  items,
+  onSelect,
+  accent = false,
+}: {
+  title: string;
+  hint: string;
+  items: CatalogItem[];
+  onSelect: (id: BookableId) => void;
+  accent?: boolean;
+}) {
+  return (
+    <div>
+      <div className="mb-3">
+        <p className="text-xs font-medium uppercase tracking-[0.16em] text-accent">
+          {title}
+        </p>
+        <p className="mt-1 text-sm text-muted">{hint}</p>
+      </div>
+      <div className="space-y-2">
+        {items.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => onSelect(item.id)}
+            className={`pressable flex w-full items-center gap-3 rounded-2xl border p-2.5 text-left transition-colors ${
+              accent
+                ? "border-accent/30 bg-accent/5 hover:border-accent/50"
+                : "border-border bg-surface-2 hover:border-accent/40"
+            }`}
+          >
+            <span className="relative size-16 shrink-0 overflow-hidden rounded-xl outline outline-1 outline-black/10">
+              <Image
+                src={item.image}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="64px"
+              />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="flex items-start justify-between gap-2">
+                <span className="font-medium leading-snug">{item.name}</span>
+                <span className="shrink-0 text-sm font-semibold">
+                  {item.priceSuffix
+                    ? `${formatPrice(item.price)}${item.priceSuffix}`
+                    : formatPrice(item.price)}
+                </span>
+              </span>
+              <span className="mt-0.5 block text-xs text-muted">
+                {item.description}
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function UpsellStep({
+  primaryId,
+  primaryName,
+  savings,
+  onAccept,
+  onSkip,
+}: {
+  primaryId: BookableId | null;
+  primaryName: string;
+  savings: number;
+  onAccept: () => void;
+  onSkip: () => void;
+}) {
+  const isExterior = primaryId === "exterieur";
+  const missingSide = isExterior ? "interieur" : "exterieur";
+  const missingLabel = isExterior ? "binnenkant" : "buitenkant";
+  const chosenLabel = isExterior ? "buitenkant" : "binnenkant";
+
+  const points = isExterior
+    ? [
+        "Een glanzende buitenkant valt harder op als het interieur fris meekomt",
+        "Stoelen, vloer en dashboard krijgen dezelfde aandacht als de lak",
+        "U zit meteen in een schone auto, niet alleen ernaast",
+      ]
+    : [
+        "Een fris interieur verdient een buitenkant die erbij past",
+        "Velgen, lak en ramen maken het plaatje compleet",
+        "Eén bezoek, binnen en buiten klaar, zonder tweede planning",
+      ];
+
+  return (
+    <div className="space-y-4">
+      <div className="overflow-hidden rounded-2xl border border-accent/40 bg-accent/8">
+        <div className="relative h-36 w-full">
+          <Image
+            src="/options/full.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="400px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/35 to-transparent" />
+          <p className="absolute bottom-3 left-4 right-4 text-sm font-medium text-white">
+            Full detail. Binnen en buiten in één keer.
+          </p>
+        </div>
+
+        <div className="p-5">
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-accent">
+            Maak het compleet
+          </p>
+          <h3 className="font-display mt-2 text-2xl font-semibold tracking-tight">
+            Alleen de {chosenLabel} voelt half
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed text-muted">
+            U koos {primaryName.toLowerCase()}. De {missingLabel} blijft dan
+            zichtbaar en voelbaar. Met full detail krijgt u beide kanten voor{" "}
+            {formatPrice(150)}. Los boeken kost {formatPrice(170)}. U bespaart{" "}
+            {formatPrice(savings)} en mist niets.
+          </p>
+
+          <ul className="mt-4 space-y-2.5">
+            {points.map((point) => (
+              <li key={point} className="flex gap-2.5 text-sm leading-snug">
+                <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={onAccept}
+        className="pressable inline-flex h-12 w-full items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-ink"
+      >
+        Ja, full detail voor {formatPrice(150)}
+      </button>
+      <button
+        type="button"
+        onClick={onSkip}
+        className="pressable inline-flex h-11 w-full items-center justify-center rounded-full border border-border text-sm font-medium"
+      >
+        Nee, alleen {primaryName.toLowerCase()}
+      </button>
+      <p className="text-center text-xs text-muted">
+        U kunt later alsnog extras toevoegen, zoals {missingSide === "interieur" ? "geur of leer" : "koplampen of insecten"}.
+      </p>
+    </div>
   );
 }
 
