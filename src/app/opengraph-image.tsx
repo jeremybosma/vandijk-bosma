@@ -103,7 +103,19 @@ export default async function Image() {
             inset: 0,
             display: "flex",
             background:
-              "linear-gradient(180deg, rgba(20,16,12,0.15) 0%, rgba(20,16,12,0.12) 42%, rgba(20,16,12,0.78) 76%, rgba(20,16,12,0.94) 100%)",
+              "linear-gradient(180deg, rgba(26,20,14,0.35) 0%, rgba(26,20,14,0.2) 28%, rgba(28,22,16,0.72) 62%, rgba(30,24,18,0.96) 100%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 300,
+            display: "flex",
+            background:
+              "linear-gradient(180deg, rgba(30,24,18,0) 0%, rgba(30,24,18,0.45) 38%, rgba(30,24,18,0.88) 72%, rgba(30,24,18,0.96) 100%)",
           }}
         />
 
