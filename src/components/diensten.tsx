@@ -3,8 +3,8 @@
 import { motion } from "motion/react";
 
 import { useBooking } from "@/components/booking-provider";
-import { MorphPriceFrom } from "@/components/morph-text";
-import { SERVICES, type PackageId } from "@/lib/catalog";
+import { MorphPrice, MorphPriceFrom } from "@/components/morph-text";
+import { ADDONS, SERVICES, type PackageId } from "@/lib/catalog";
 
 export function Diensten() {
   const { openBooking } = useBooking();
@@ -80,6 +80,45 @@ export function Diensten() {
               </button>
             </motion.article>
           ))}
+        </div>
+
+        <div className="mt-14">
+          <div className="max-w-2xl">
+            <h3 className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
+              Losse opties
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Apart boeken of later toevoegen aan een pakket. Bij een pakket
+              geldt een lagere prijs.
+            </p>
+          </div>
+
+          <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
+            {ADDONS.map((addon, index) => (
+              <motion.button
+                key={addon.id}
+                type="button"
+                onClick={() => openBooking({ dienst: addon.id })}
+                className="pressable flex flex-col items-start rounded-2xl border border-border bg-surface px-4 py-4 text-left transition-colors hover:border-accent/45"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{
+                  duration: 0.45,
+                  delay: index * 0.05,
+                  ease: [0.23, 1, 0.32, 1],
+                }}
+              >
+                <span className="text-sm font-medium leading-snug">
+                  {addon.name}
+                </span>
+                <MorphPrice
+                  value={addon.soloPrice}
+                  className="mt-2 text-sm text-muted"
+                />
+              </motion.button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
