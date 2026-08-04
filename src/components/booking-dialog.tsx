@@ -305,7 +305,7 @@ export function BookingDialog() {
             </div>
 
             {step !== "done" ? (
-              <div className="flex gap-1.5 overflow-x-auto border-b border-border px-4 py-3 sm:px-5">
+              <div className="flex items-center gap-1.5 overflow-x-auto border-b border-border px-4 py-3 sm:px-5">
                 {stepLabels.map((item, index) => {
                   const done = activeIndex > index;
                   const current = item.id === step;
@@ -317,7 +317,7 @@ export function BookingDialog() {
                       onClick={() => {
                         if (done) setStep(item.id);
                       }}
-                      className={`pressable shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
+                      className={`pressable inline-flex h-8 shrink-0 items-center rounded-full px-3 text-xs font-medium leading-none ${
                         current
                           ? "bg-accent text-accent-ink"
                           : done
