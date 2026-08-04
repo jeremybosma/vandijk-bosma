@@ -73,11 +73,9 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="border-t border-border">
-        <p className="mx-auto max-w-6xl px-5 py-5 text-xs text-muted sm:px-8">
-          © {new Date().getFullYear()} {SITE.fullName}. Alle rechten voorbehouden.
-        </p>
-      </div>
+      <p className="mx-auto max-w-6xl px-5 pb-8 pt-2 text-xs text-muted sm:px-8">
+        © {new Date().getFullYear()} {SITE.fullName}. Alle rechten voorbehouden.
+      </p>
     </footer>
   );
 }

@@ -1,3 +1,5 @@
+import { SectionHeading } from "@/components/section-heading";
+
 const steps = [
   {
     title: "Aanvraag",
@@ -13,7 +15,7 @@ const steps = [
   },
   {
     title: "Resultaat",
-    body: "U krijgt een verzorgde auto terug, zonder zelf weg te hoeven brengen.",
+    body: "U stapt weer in een frisse, verzorgde auto, zonder zelf weg te hoeven brengen.",
   },
 ] as const;
 
@@ -21,18 +23,12 @@ export function Werkwijze() {
   return (
     <section className="border-y border-border bg-surface/60 px-5 py-20 sm:px-8 sm:py-24">
       <div className="mx-auto max-w-6xl">
-        <div className="max-w-2xl">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">
-            Werkwijze
-          </p>
-          <h2 className="font-display mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Zo werkt het
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted">
-            Van afspraak tot eindresultaat: helder, betrouwbaar en zonder
-            verrassingen.
-          </p>
-        </div>
+        <SectionHeading
+          icon="Checkmark"
+          eyebrow="Werkwijze"
+          title="Zo werkt het"
+          description="Van afspraak tot eindresultaat: helder, betrouwbaar en zonder verrassingen."
+        />
 
         <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (

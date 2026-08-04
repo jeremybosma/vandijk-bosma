@@ -4,7 +4,9 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 import { useBooking } from "@/components/booking-provider";
+import { Icons } from "@/components/icons";
 import { MorphPrice, MorphPriceFrom } from "@/components/morph-text";
+import { SectionHeading } from "@/components/section-heading";
 import { ADDONS, SERVICES, type PackageId } from "@/lib/catalog";
 
 export function Diensten() {
@@ -13,18 +15,12 @@ export function Diensten() {
   return (
     <section id="diensten" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-28">
       <div className="mx-auto max-w-6xl">
-        <div className="max-w-2xl">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">
-            Diensten
-          </p>
-          <h2 className="font-display mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Drie pakketten. Duidelijke prijzen.
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted">
-            Alle behandelingen vinden plaats bij u thuis of op een andere
-            afgesproken locatie. Prijzen inclusief BTW.
-          </p>
-        </div>
+        <SectionHeading
+          icon="Car"
+          eyebrow="Diensten"
+          title="Drie pakketten. Duidelijke prijzen."
+          description="Alle behandelingen vinden plaats bij u thuis of op een andere afgesproken locatie. Prijzen inclusief BTW."
+        />
 
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {SERVICES.map((service, index) => (
@@ -98,8 +94,9 @@ export function Diensten() {
 
         <div className="mt-14">
           <div className="max-w-2xl">
-            <h3 className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
-              Losse opties
+            <h3 className="font-display flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl">
+              <Icons.Sparkles className="text-accent" size={20} />
+              <span>Losse opties</span>
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">
               Apart boeken of later toevoegen aan een pakket. Bij een pakket

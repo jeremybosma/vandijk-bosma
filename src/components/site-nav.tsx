@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { useBooking } from "@/components/booking-provider";
+import { Icons } from "@/components/icons";
 import { SITE } from "@/lib/site";
 
 const links = [
@@ -61,8 +62,9 @@ export function SiteNav() {
           <button
             type="button"
             onClick={() => openBooking()}
-            className="pressable inline-flex h-10 items-center rounded-full bg-accent px-5 text-sm font-medium text-accent-ink"
+            className="pressable inline-flex h-10 items-center gap-2 rounded-full bg-accent px-5 text-sm font-medium text-accent-ink"
           >
+            <Icons.Calendar size={15} />
             Afspraak maken
           </button>
         </nav>
@@ -74,24 +76,7 @@ export function SiteNav() {
           aria-label={open ? "Menu sluiten" : "Menu openen"}
           onClick={() => setOpen((value) => !value)}
         >
-          <span className="sr-only">Menu</span>
-          <span className="relative block h-3.5 w-4">
-            <span
-              className={`absolute left-0 top-0 block h-0.5 w-4 origin-center bg-foreground transition-transform duration-200 ${
-                open ? "translate-y-[6px] rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-[6px] block h-0.5 w-4 bg-foreground transition-opacity duration-200 ${
-                open ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-[12px] block h-0.5 w-4 origin-center bg-foreground transition-transform duration-200 ${
-                open ? "-translate-y-[6px] -rotate-45" : ""
-              }`}
-            />
-          </span>
+          {open ? <Icons.Close size={16} /> : <Icons.Menu size={18} />}
         </button>
       </div>
 
@@ -110,12 +95,13 @@ export function SiteNav() {
             ))}
             <button
               type="button"
-              className="pressable mt-2 inline-flex h-11 items-center justify-center rounded-full bg-accent text-sm font-medium text-accent-ink"
+              className="pressable mt-2 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-accent text-sm font-medium text-accent-ink"
               onClick={() => {
                 setOpen(false);
                 openBooking();
               }}
             >
+              <Icons.Calendar size={16} />
               Afspraak maken
             </button>
           </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { useBooking } from "@/components/booking-provider";
+import { Icons } from "@/components/icons";
 
 export function FloatingCta() {
   const { open, openBooking } = useBooking();
@@ -30,10 +31,7 @@ export function FloatingCta() {
       aria-hidden={!visible}
       tabIndex={visible ? 0 : -1}
     >
-      <span className="relative flex size-2">
-        <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-ink/35" />
-        <span className="relative inline-flex size-2 rounded-full bg-accent-ink/70" />
-      </span>
+      <Icons.Calendar size={16} />
       Afspraak plannen
     </button>
   );

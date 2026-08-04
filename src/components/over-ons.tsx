@@ -1,17 +1,22 @@
+import { Icons } from "@/components/icons";
+import { SectionHeading } from "@/components/section-heading";
 import { SITE } from "@/lib/site";
 
 const values = [
   {
-    title: "Kwaliteit boven kwantiteit",
-    body: "Iedere auto krijgt de aandacht die nodig is voor een goed resultaat.",
+    title: "Frisse cabine",
+    body: "Schoon, neutraal en aangenaam om in te stappen. Zo voelt elke rit meteen beter.",
+    icon: "Wind" as const,
   },
   {
-    title: "Betrouwbaarheid",
-    body: "Wij komen afspraken na en communiceren eerlijk en transparant.",
+    title: "Minder gedoe",
+    body: "Wij komen bij u langs, ook 's avonds of in het weekend. U hoeft nergens heen.",
+    icon: "House" as const,
   },
   {
-    title: "Klantgericht",
-    body: "Persoonlijk advies en service op maat, alsof het onze eigen auto is.",
+    title: "Strak afgewerkt",
+    body: "Professionele producten en netjes tot in de details, alsof het onze eigen auto is.",
+    icon: "Sparkles" as const,
   },
 ] as const;
 
@@ -19,32 +24,35 @@ export function OverOns() {
   return (
     <section className="border-t border-border px-5 py-20 sm:px-8 sm:py-24">
       <div className="mx-auto max-w-6xl">
-        <div className="max-w-2xl">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">
-            Over ons
-          </p>
-          <h2 className="font-display mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Gebouwd op zorg voor auto&apos;s
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted">
-            {SITE.fullName} is opgericht door {SITE.owners[0]} en{" "}
-            {SITE.owners[1]}. Wij geloven dat een auto meer is dan een
-            vervoermiddel. Daarom behandelen wij iedere auto met dezelfde zorg
-            alsof deze van onszelf is.
-          </p>
-        </div>
+        <SectionHeading
+          icon="Sofa"
+          eyebrow="Over ons"
+          title="Gemaakt voor prettig rijden"
+          description={
+            <>
+              {SITE.fullName} is opgericht door {SITE.owners[0]} en{" "}
+              {SITE.owners[1]}. U zit er elke dag in. Dan mag het ook fris,
+              rustig en schoon aanvoelen. Wij brengen die rust terug bij u thuis
+              of op locatie, zonder poespas.
+            </>
+          }
+        />
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {values.map((value) => (
-            <div key={value.title} className="border-t border-border pt-5">
-              <h3 className="text-lg font-semibold tracking-tight">
-                {value.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                {value.body}
-              </p>
-            </div>
-          ))}
+          {values.map((value) => {
+            const Icon = Icons[value.icon];
+            return (
+              <div key={value.title} className="border-t border-border pt-5">
+                <h3 className="flex items-center gap-2.5 text-lg font-semibold tracking-tight">
+                  <Icon className="text-accent" size={18} />
+                  <span>{value.title}</span>
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  {value.body}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

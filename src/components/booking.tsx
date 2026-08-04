@@ -3,13 +3,23 @@
 import Image from "next/image";
 
 import { useBooking } from "@/components/booking-provider";
+import { Icons } from "@/components/icons";
 import { MorphPrice } from "@/components/morph-text";
 import type { BookableId } from "@/lib/catalog";
 
 const highlights = [
-  "Avonden en weekenden",
-  "Bij u thuis of op locatie",
-  "Binnen 2 minuten aangevraagd",
+  {
+    label: "Avonden en weekenden",
+    icon: "MoonStars" as const,
+  },
+  {
+    label: "Bij u thuis of op locatie",
+    icon: "House" as const,
+  },
+  {
+    label: "Binnen 2 minuten aangevraagd",
+    icon: "Clock" as const,
+  },
 ] as const;
 
 const quickOptions: {
@@ -46,8 +56,9 @@ export function Booking() {
             </div>
 
             <div className="flex flex-col justify-center p-7 sm:p-10">
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">
-                Afspraak
+              <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-accent">
+                <Icons.Calendar className="text-accent" size={14} />
+                <span>Afspraak</span>
               </p>
               <h2 className="font-display mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
                 Plan uw detailing
@@ -58,13 +69,19 @@ export function Booking() {
                 per mail.
               </p>
 
-              <ul className="mt-6 space-y-2">
-                {highlights.map((item) => (
-                  <li key={item} className="flex items-center gap-2.5 text-sm">
-                    <span className="size-1.5 shrink-0 rounded-full bg-accent" />
-                    {item}
-                  </li>
-                ))}
+              <ul className="mt-6 space-y-2.5">
+                {highlights.map((item) => {
+                  const Icon = Icons[item.icon];
+                  return (
+                    <li
+                      key={item.label}
+                      className="flex items-center gap-2.5 text-sm"
+                    >
+                      <Icon className="shrink-0 text-accent" size={16} />
+                      <span>{item.label}</span>
+                    </li>
+                  );
+                })}
               </ul>
 
               <div className="mt-7">
@@ -92,8 +109,9 @@ export function Booking() {
               <button
                 type="button"
                 onClick={() => openBooking()}
-                className="pressable mt-8 inline-flex h-12 w-full items-center justify-center rounded-full bg-accent px-7 text-sm font-semibold text-accent-ink sm:w-auto"
+                className="pressable mt-8 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-accent px-7 text-sm font-semibold text-accent-ink sm:w-auto"
               >
+                <Icons.Calendar size={16} />
                 Afspraak maken
               </button>
             </div>

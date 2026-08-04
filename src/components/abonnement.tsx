@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 
 import { useBooking } from "@/components/booking-provider";
+import { Icons } from "@/components/icons";
 import { MorphPrice } from "@/components/morph-text";
 
 const points = [
@@ -29,8 +30,9 @@ export function Abonnement() {
       >
         <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
           <div className="p-7 sm:p-10">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">
-              Abonnement
+            <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-accent">
+              <Icons.Star className="text-accent" size={14} />
+              <span>Abonnement</span>
             </p>
             <h2 className="font-display mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
               Full detail elke maand, voor particulieren
@@ -43,8 +45,11 @@ export function Abonnement() {
 
             <ul className="mt-8 space-y-3">
               {points.map((point) => (
-                <li key={point} className="flex items-start gap-3 text-sm">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
+                <li key={point} className="flex items-start gap-2.5 text-sm">
+                  <Icons.Checkmark
+                    className="mt-0.5 shrink-0 text-accent"
+                    size={15}
+                  />
                   <span>{point}</span>
                 </li>
               ))}

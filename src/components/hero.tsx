@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 import { useBooking } from "@/components/booking-provider";
+import { Icons } from "@/components/icons";
 import { SITE } from "@/lib/site";
 
 const collage = [
@@ -109,8 +110,9 @@ export function Hero() {
           <button
             type="button"
             onClick={() => openBooking()}
-            className="pressable inline-flex h-12 items-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-ink"
+            className="pressable inline-flex h-12 items-center gap-2 rounded-full bg-accent px-6 text-sm font-semibold text-accent-ink"
           >
+            <Icons.Calendar size={16} />
             Afspraak maken
           </button>
           <a
