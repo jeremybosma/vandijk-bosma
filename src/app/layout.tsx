@@ -35,13 +35,11 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE.url,
     siteName: SITE.fullName,
-    images: [{ url: "/hero.jpg", width: 2400, height: 1600, alt: SITE.fullName }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE.fullName} · ${SITE.tagline}`,
     description: SITE.description,
-    images: ["/hero.jpg"],
   },
   alternates: {
     canonical: "/",
