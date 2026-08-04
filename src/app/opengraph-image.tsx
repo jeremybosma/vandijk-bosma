@@ -9,8 +9,8 @@ export const alt = `${SITE.fullName} · professionele detailing bij u thuis`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-async function loadImage(filename: string) {
-  const bytes = await readFile(join(process.cwd(), "public", filename));
+async function loadJpeg(filename: string) {
+  const bytes = await readFile(join(process.cwd(), "public", "og", filename));
   return `data:image/jpeg;base64,${bytes.toString("base64")}`;
 }
 
@@ -25,12 +25,11 @@ async function loadSyne() {
 }
 
 export default async function Image() {
-  const [syne, one, two, three, four] = await Promise.all([
+  const [syne, one, two, three] = await Promise.all([
     loadSyne(),
-    loadImage("collage-1.jpg"),
-    loadImage("collage-2.jpg"),
-    loadImage("collage-3.jpg"),
-    loadImage("collage-4.jpg"),
+    loadJpeg("1.jpg"),
+    loadJpeg("2.jpg"),
+    loadJpeg("3.jpg"),
   ]);
 
   return new ImageResponse(
@@ -49,87 +48,52 @@ export default async function Image() {
             position: "absolute",
             inset: 0,
             display: "flex",
-            gap: 8,
-            padding: 8,
+            gap: 6,
+            padding: 6,
           }}
         >
           <div
             style={{
               display: "flex",
-              width: "58%",
-              height: "100%",
-              borderRadius: 18,
-              overflow: "hidden",
+              width: 780,
+              height: 618,
+              borderRadius: 14,
+              backgroundImage: `url(${one})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
-          >
-            <img
-              src={one}
-              alt=""
-              width={680}
-              height={614}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-          </div>
-
+          />
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              width: "42%",
-              height: "100%",
-              gap: 8,
+              width: 402,
+              height: 618,
+              gap: 6,
             }}
           >
             <div
               style={{
                 display: "flex",
-                flex: 1,
-                borderRadius: 18,
-                overflow: "hidden",
+                width: 402,
+                height: 306,
+                borderRadius: 14,
+                backgroundImage: `url(${two})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
-            >
-              <img
-                src={two}
-                alt=""
-                width={480}
-                height={300}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </div>
-            <div style={{ display: "flex", flex: 1, gap: 8 }}>
-              <div
-                style={{
-                  display: "flex",
-                  flex: 1,
-                  borderRadius: 18,
-                  overflow: "hidden",
-                }}
-              >
-                <img
-                  src={three}
-                  alt=""
-                  width={240}
-                  height={300}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flex: 1,
-                  borderRadius: 18,
-                  overflow: "hidden",
-                }}
-              >
-                <img
-                  src={four}
-                  alt=""
-                  width={240}
-                  height={300}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </div>
-            </div>
+            />
+            <div
+              style={{
+                display: "flex",
+                width: 402,
+                height: 306,
+                borderRadius: 14,
+                backgroundImage: `url(${three})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
           </div>
         </div>
 
@@ -139,7 +103,7 @@ export default async function Image() {
             inset: 0,
             display: "flex",
             background:
-              "linear-gradient(180deg, rgba(20,16,12,0.2) 0%, rgba(20,16,12,0.15) 40%, rgba(20,16,12,0.82) 78%, rgba(20,16,12,0.96) 100%)",
+              "linear-gradient(180deg, rgba(20,16,12,0.15) 0%, rgba(20,16,12,0.12) 42%, rgba(20,16,12,0.78) 76%, rgba(20,16,12,0.94) 100%)",
           }}
         />
 
