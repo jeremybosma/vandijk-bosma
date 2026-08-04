@@ -12,13 +12,14 @@ import {
 } from "react";
 
 import { useBooking } from "@/components/booking-provider";
+import { MorphPrice } from "@/components/morph-text";
 import {
   ADDONS,
   PACKAGES,
   addonPriceFor,
   addonSavings,
+  calculateSavings,
   calculateTotal,
-  formatPrice,
   fullUpsellSavings,
   getCatalogItem,
   isBookableId,
@@ -48,6 +49,7 @@ type BuildingType =
 type FormState = {
   primaryId: BookableId | null;
   addonIds: AddonId[];
+  upgradedToFull: boolean;
   dayKey: string | null;
   slot: string | null;
   name: string;
@@ -71,6 +73,7 @@ const BUILDING_TYPES: { value: BuildingType; label: string }[] = [
 const emptyForm: FormState = {
   primaryId: null,
   addonIds: [],
+  upgradedToFull: false,
   dayKey: null,
   slot: null,
   name: "",
@@ -155,6 +158,11 @@ export function BookingDialog() {
   const primary = form.primaryId ? getCatalogItem(form.primaryId) : null;
   const selectedDay = days.find((day) => day.key === form.dayKey);
   const total = calculateTotal(form.primaryId, form.addonIds);
+  const savings = calculateSavings({
+    primaryId: form.primaryId,
+    addonIds: form.addonIds,
+    upgradedToFull: form.upgradedToFull,
+  });
   const packagePricing = usesPackageAddonPricing(form.primaryId);
   const upsellSave = fullUpsellSavings();
 
@@ -174,6 +182,7 @@ export function BookingDialog() {
     setForm((prev) => ({
       ...prev,
       primaryId: id,
+      upgradedToFull: false,
       addonIds: prev.addonIds.filter((addonId) => addonId !== id),
       dayKey: null,
       slot: null,
@@ -182,7 +191,11 @@ export function BookingDialog() {
   }
 
   function acceptUpsell() {
-    setForm((prev) => ({ ...prev, primaryId: "full" }));
+    setForm((prev) => ({
+      ...prev,
+      primaryId: "full",
+      upgradedToFull: true,
+    }));
     setStep("addons");
   }
 
@@ -386,17 +399,20 @@ export function BookingDialog() {
                             <span className="shrink-0 text-right">
                               {packagePricing && save > 0 ? (
                                 <>
-                                  <span className="mr-1.5 text-xs text-muted line-through">
-                                    {formatPrice(addon.soloPrice ?? addon.price)}
-                                  </span>
-                                  <span className="text-sm font-semibold">
-                                    {formatPrice(price)}
-                                  </span>
+                                  <MorphPrice
+                                    value={addon.soloPrice ?? addon.price}
+                                    className="mr-1.5 text-xs text-muted line-through"
+                                  />
+                                  <MorphPrice
+                                    value={price}
+                                    className="text-sm font-semibold"
+                                  />
                                 </>
                               ) : (
-                                <span className="text-sm font-semibold">
-                                  {formatPrice(price)}
-                                </span>
+                                <MorphPrice
+                                  value={price}
+                                  className="text-sm font-semibold"
+                                />
                               )}
                             </span>
                           </span>
@@ -404,9 +420,12 @@ export function BookingDialog() {
                             {addon.description}
                           </span>
                           {packagePricing && save > 0 ? (
-                            <span className="mt-1 inline-block text-[11px] font-medium text-accent">
-                              Bespaar {formatPrice(save)} bij uw pakket
-                            </span>
+                            <MorphPrice
+                              value={save}
+                              prefix="Bespaar "
+                              suffix=" bij uw pakket"
+                              className="mt-1 inline-block text-[11px] font-medium text-accent"
+                            />
                           ) : null}
                         </span>
                         <span
@@ -603,13 +622,27 @@ export function BookingDialog() {
                         .join(", ")}
                     </p>
                   ) : null}
-                  <p className="mt-3 text-base font-semibold">
-                    Totaal {formatPrice(total)}
-                    {form.primaryId && isPackageId(form.primaryId) &&
-                    getCatalogItem(form.primaryId)?.priceSuffix
-                      ? getCatalogItem(form.primaryId)?.priceSuffix
-                      : ""}
-                  </p>
+                  <div className="mt-4">
+                    <MorphPrice
+                      value={total}
+                      prefix="Totaal "
+                      suffix={
+                        form.primaryId &&
+                        isPackageId(form.primaryId) &&
+                        getCatalogItem(form.primaryId)?.priceSuffix
+                          ? (getCatalogItem(form.primaryId)?.priceSuffix ?? "")
+                          : ""
+                      }
+                      className="text-base font-semibold"
+                    />
+                    <MorphPrice
+                      value={savings}
+                      prefix="U bespaart "
+                      className={`mt-1 block text-sm font-medium text-accent ${
+                        savings > 0 ? "" : "invisible"
+                      }`}
+                    />
+                  </div>
                   <button
                     type="button"
                     onClick={reset}
@@ -621,23 +654,28 @@ export function BookingDialog() {
               ) : null}
             </div>
 
-            {step !== "service" && step !== "done" && step !== "details" ? (
+            {step !== "service" && step !== "done" ? (
               <div className="border-t border-border px-4 py-3 sm:px-5">
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-end justify-between gap-3">
                   <div>
                     <p className="text-xs text-muted">Totaal</p>
-                    <p className="text-lg font-semibold tracking-tight">
-                      {formatPrice(total)}
-                      {primary?.priceSuffix && form.addonIds.length === 0
-                        ? primary.priceSuffix
-                        : ""}
-                    </p>
+                    <MorphPrice
+                      value={total}
+                      suffix={
+                        primary?.priceSuffix && form.addonIds.length === 0
+                          ? primary.priceSuffix
+                          : ""
+                      }
+                      className="text-lg font-semibold tracking-tight"
+                    />
                   </div>
-                  {form.addonIds.length > 0 && packagePricing ? (
-                    <p className="text-right text-xs text-accent">
-                      Inclusief pakketkorting op extra’s
-                    </p>
-                  ) : null}
+                  <div className="text-right">
+                    <p className="text-xs text-muted">Bespaard</p>
+                    <MorphPrice
+                      value={savings}
+                      className="text-sm font-semibold text-accent"
+                    />
+                  </div>
                 </div>
               </div>
             ) : null}
@@ -693,11 +731,11 @@ function ServiceGroup({
             <span className="min-w-0 flex-1">
               <span className="flex items-start justify-between gap-2">
                 <span className="font-medium leading-snug">{item.name}</span>
-                <span className="shrink-0 text-sm font-semibold">
-                  {item.priceSuffix
-                    ? `${formatPrice(item.price)}${item.priceSuffix}`
-                    : formatPrice(item.price)}
-                </span>
+                <MorphPrice
+                  value={item.price}
+                  suffix={item.priceSuffix ?? ""}
+                  className="shrink-0 text-sm font-semibold"
+                />
               </span>
               <span className="mt-0.5 block text-xs text-muted">
                 {item.description}
@@ -767,8 +805,22 @@ function UpsellStep({
           <p className="mt-3 text-sm leading-relaxed text-muted">
             U koos {primaryName.toLowerCase()}. De {missingLabel} blijft dan
             zichtbaar en voelbaar. Met full detail krijgt u beide kanten voor{" "}
-            {formatPrice(150)}. Los boeken kost {formatPrice(170)}. U bespaart{" "}
-            {formatPrice(savings)} en mist niets.
+            <MorphPrice
+              value={150}
+              className="inline font-medium text-foreground"
+            />
+            . Los boeken kost{" "}
+            <MorphPrice
+              value={170}
+              className="inline font-medium text-foreground"
+            />
+            . U
+            bespaart{" "}
+            <MorphPrice
+              value={savings}
+              className="inline font-medium text-accent"
+            />{" "}
+            en mist niets.
           </p>
 
           <ul className="mt-4 space-y-2.5">
@@ -787,7 +839,7 @@ function UpsellStep({
         onClick={onAccept}
         className="pressable inline-flex h-12 w-full items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-ink"
       >
-        Ja, full detail voor {formatPrice(150)}
+        Ja, full detail voor <MorphPrice value={150} className="inline" />
       </button>
       <button
         type="button"

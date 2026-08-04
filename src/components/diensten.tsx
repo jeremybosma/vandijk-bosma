@@ -3,7 +3,8 @@
 import { motion } from "motion/react";
 
 import { useBooking } from "@/components/booking-provider";
-import { SERVICES, formatPriceFrom, type PackageId } from "@/lib/catalog";
+import { MorphPriceFrom } from "@/components/morph-text";
+import { SERVICES, type PackageId } from "@/lib/catalog";
 
 export function Diensten() {
   const { openBooking } = useBooking();
@@ -51,9 +52,10 @@ export function Diensten() {
                 {service.name}
               </h3>
               <p className="mt-3 flex items-baseline gap-2">
-                <span className="text-3xl font-semibold tracking-tight">
-                  {formatPriceFrom(service.price)}
-                </span>
+                <MorphPriceFrom
+                  value={service.price}
+                  className="text-3xl font-semibold tracking-tight"
+                />
                 <span className="text-sm text-muted">{service.durationLabel}</span>
               </p>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">

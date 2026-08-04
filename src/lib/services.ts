@@ -8,6 +8,7 @@ export {
   SUBSCRIPTION,
   addonPriceFor,
   addonSavings,
+  calculateSavings,
   calculateTotal,
   formatPrice,
   formatPriceFrom,

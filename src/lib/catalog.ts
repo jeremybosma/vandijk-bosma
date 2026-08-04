@@ -214,6 +214,32 @@ export function calculateTotal(
   return total;
 }
 
+export function calculateSavings({
+  primaryId,
+  addonIds,
+  upgradedToFull,
+}: {
+  primaryId: BookableId | null;
+  addonIds: AddonId[];
+  upgradedToFull: boolean;
+}) {
+  let savings = 0;
+
+  if (upgradedToFull && primaryId === "full") {
+    savings += fullUpsellSavings();
+  }
+
+  if (usesPackageAddonPricing(primaryId)) {
+    for (const addonId of addonIds) {
+      const addon = getCatalogItem(addonId);
+      if (!addon || addon.kind !== "addon") continue;
+      savings += addonSavings(addon);
+    }
+  }
+
+  return savings;
+}
+
 /** Legacy aliases used by marketing pages */
 export type ServiceId = PackageId;
 export const SERVICES = PACKAGES.filter((item) => item.id !== "abonnement");

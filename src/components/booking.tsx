@@ -3,7 +3,8 @@
 import Image from "next/image";
 
 import { useBooking } from "@/components/booking-provider";
-import { formatPrice, type BookableId } from "@/lib/catalog";
+import { MorphPrice } from "@/components/morph-text";
+import type { BookableId } from "@/lib/catalog";
 
 const highlights = [
   "Avonden en weekenden",
@@ -14,12 +15,12 @@ const highlights = [
 const quickOptions: {
   id: BookableId;
   label: string;
-  price: string;
+  price: number;
 }[] = [
-  { id: "exterieur", label: "Exterieur", price: formatPrice(70) },
-  { id: "interieur", label: "Interieur", price: formatPrice(100) },
-  { id: "full", label: "Full detail", price: formatPrice(150) },
-  { id: "koplampen", label: "Koplampen", price: formatPrice(80) },
+  { id: "exterieur", label: "Exterieur", price: 70 },
+  { id: "interieur", label: "Interieur", price: 100 },
+  { id: "full", label: "Full detail", price: 150 },
+  { id: "koplampen", label: "Koplampen", price: 80 },
 ];
 
 export function Booking() {
@@ -79,7 +80,10 @@ export function Booking() {
                       className="pressable rounded-full border border-border bg-surface-2 px-3.5 py-2 text-sm transition-colors hover:border-accent/45"
                     >
                       <span className="font-medium">{option.label}</span>
-                      <span className="ml-1.5 text-muted">{option.price}</span>
+                      <MorphPrice
+                        value={option.price}
+                        className="ml-1.5 text-muted"
+                      />
                     </button>
                   ))}
                 </div>

@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 
 import { useBooking } from "@/components/booking-provider";
-import { formatPrice } from "@/lib/catalog";
+import { MorphPrice } from "@/components/morph-text";
 
 const points = [
   "1× per maand een full detail bij u thuis",
@@ -55,16 +55,18 @@ export function Abonnement() {
             <div>
               <p className="text-sm text-muted">Per maand</p>
               <p className="mt-2 flex items-baseline gap-2">
-                <span className="font-display text-5xl font-semibold tracking-tight">
-                  {formatPrice(80)}
-                </span>
+                <MorphPrice
+                  value={80}
+                  className="font-display text-5xl font-semibold tracking-tight"
+                />
                 <span className="text-sm text-muted">/ maand</span>
               </p>
               <p className="mt-3 text-sm leading-relaxed text-muted">
                 Full detail · 1× per maand · min. 6 maanden · incl. BTW
               </p>
               <p className="mt-4 text-sm text-accent">
-                Bespaar t.o.v. een losse full detail van {formatPrice(150)}
+                Bespaar t.o.v. een losse full detail van{" "}
+                <MorphPrice value={150} className="inline" />
               </p>
             </div>
 
