@@ -1,12 +1,12 @@
 const places = [
-  { id: "delfzijl", label: "Delfzijl", x: 292, y: 78, base: false },
-  { id: "groningen", label: "Groningen", x: 198, y: 132, base: false },
-  { id: "haren", label: "Haren", x: 188, y: 168, base: false },
-  { id: "hoogezand", label: "Hoogezand", x: 248, y: 178, base: true },
-  { id: "winschoten", label: "Winschoten", x: 318, y: 188, base: false },
-  { id: "veendam", label: "Veendam", x: 278, y: 218, base: false },
-  { id: "zuidlaren", label: "Zuidlaren", x: 168, y: 228, base: false },
-  { id: "assen", label: "Assen", x: 148, y: 292, base: false },
+  { id: "delfzijl", label: "Delfzijl", x: 292, y: 78 },
+  { id: "groningen", label: "Groningen", x: 198, y: 132 },
+  { id: "haren", label: "Haren", x: 188, y: 168 },
+  { id: "hoogezand", label: "Hoogezand", x: 248, y: 178 },
+  { id: "winschoten", label: "Winschoten", x: 318, y: 188 },
+  { id: "veendam", label: "Veendam", x: 278, y: 218 },
+  { id: "zuidlaren", label: "Zuidlaren", x: 168, y: 228 },
+  { id: "assen", label: "Assen", x: 148, y: 292 },
 ] as const;
 
 export function WerkgebiedMap() {
@@ -33,7 +33,6 @@ export function WerkgebiedMap() {
           <rect width="400" height="340" fill="var(--surface)" />
           <ellipse cx="220" cy="160" rx="180" ry="140" fill="url(#map-glow)" />
 
-          {/* Stylized Noord-Nederland landmass */}
           <path
             d="M86 96
                C104 58, 148 42, 188 48
@@ -50,7 +49,6 @@ export function WerkgebiedMap() {
             strokeWidth="1.5"
           />
 
-          {/* Soft inland detail lines */}
           <path
             d="M120 140 C150 128, 190 124, 230 136 C260 146, 290 160, 310 180"
             fill="none"
@@ -66,11 +64,10 @@ export function WerkgebiedMap() {
             strokeWidth="1"
           />
 
-          {/* Service radius around home base */}
           <circle
-            cx="248"
-            cy="178"
-            r="78"
+            cx="220"
+            cy="180"
+            r="88"
             fill="var(--accent)"
             fillOpacity="0.07"
             stroke="var(--accent)"
@@ -81,79 +78,31 @@ export function WerkgebiedMap() {
 
           {places.map((place) => (
             <g key={place.id}>
-              {place.base ? (
-                <>
-                  <circle
-                    cx={place.x}
-                    cy={place.y}
-                    r="9"
-                    fill="var(--accent)"
-                    fillOpacity="0.2"
-                  />
-                  <circle
-                    cx={place.x}
-                    cy={place.y}
-                    r="4.5"
-                    fill="var(--accent)"
-                  />
-                  <text
-                    x={place.x + 10}
-                    y={place.y - 8}
-                    fill="var(--accent)"
-                    fontSize="11"
-                    fontWeight="600"
-                    fontFamily="var(--font-body), ui-sans-serif, sans-serif"
-                  >
-                    {place.label}
-                  </text>
-                  <text
-                    x={place.x + 10}
-                    y={place.y + 5}
-                    fill="var(--muted)"
-                    fontSize="9"
-                    fontFamily="var(--font-body), ui-sans-serif, sans-serif"
-                  >
-                    Basis
-                  </text>
-                </>
-              ) : (
-                <>
-                  <circle
-                    cx={place.x}
-                    cy={place.y}
-                    r="3.25"
-                    fill="var(--accent)"
-                    fillOpacity="0.9"
-                  />
-                  <text
-                    x={place.x + 8}
-                    y={place.y + 3.5}
-                    fill="var(--foreground)"
-                    fillOpacity="0.88"
-                    fontSize="10.5"
-                    fontFamily="var(--font-body), ui-sans-serif, sans-serif"
-                  >
-                    {place.label}
-                  </text>
-                </>
-              )}
+              <circle
+                cx={place.x}
+                cy={place.y}
+                r="3.25"
+                fill="var(--accent)"
+                fillOpacity="0.9"
+              />
+              <text
+                x={place.x + 8}
+                y={place.y + 3.5}
+                fill="var(--foreground)"
+                fillOpacity="0.88"
+                fontSize="10.5"
+                fontFamily="var(--font-body), ui-sans-serif, sans-serif"
+              >
+                {place.label}
+              </text>
             </g>
           ))}
         </svg>
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border px-4 py-3 text-xs text-muted sm:px-5">
-        <span className="inline-flex items-center gap-2">
-          <span className="size-2 rounded-full bg-accent" />
-          Bedieningsgebied
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="relative flex size-2.5 items-center justify-center">
-            <span className="absolute size-2.5 rounded-full bg-accent/25" />
-            <span className="relative size-1.5 rounded-full bg-accent" />
-          </span>
-          Vestiging Hoogezand
-        </span>
+      <div className="flex items-center gap-2 border-t border-border px-4 py-3 text-xs text-muted sm:px-5">
+        <span className="size-2 rounded-full bg-accent" />
+        Bedieningsgebied
       </div>
     </div>
   );
