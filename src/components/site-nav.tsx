@@ -49,7 +49,11 @@ export function SiteNav() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-muted transition-colors duration-200 hover:text-foreground"
+              className={`text-sm transition-colors duration-200 ${
+                scrolled || open
+                  ? "text-muted hover:text-foreground"
+                  : "text-white hover:text-white/65"
+              }`}
             >
               {link.label}
             </a>
